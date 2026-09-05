@@ -13,16 +13,16 @@ export function Home() {
           />
         </div>
         <div className="w-4/7 m-10">
-          <h1 className="text-8xl text-red-500 font-bold mb-6">Kitty-Calls</h1>
+          <h1 className="text-8xl text-red-500 font-bold mb-6">Kitty-Tasks</h1>
           <p className="text-4xl">
-            Bienvenido a <strong>Kitty-Calls</strong>
+            Bienvenido a <strong>Kitty-Tasks</strong>
           </p>
           <p className="text-2xl">
-            Lugar donde puedes guardar de forma tranquila tus queridos{" "}
-            <strong>contactos</strong> :D
+            Lugar donde puedes administrar tus queridas <strong>tareas</strong>{" "}
+            :D
           </p>
 
-          <Link to={"/contacts"} className="className=mt-8 text-4xl font-bold">
+          <Link to={"/tasks"} className="className=mt-8 text-4xl font-bold">
             <button className="mt-6">Ingresar</button>
           </Link>
         </div>

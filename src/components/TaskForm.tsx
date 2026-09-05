@@ -1,8 +1,8 @@
-interface ContactFormProps {
-  addContact: (name: string, phone: string) => void;
+interface TaskFormProps {
+  addTask: (name: string, description: string) => void;
 }
 
-export function ContactForm({ addContact }: ContactFormProps) {
+export function TaskForm({ addTask }: TaskFormProps) {
   return (
     <>
       <form className="flex flex-col justify-center items-center space-y-10 w-full">
@@ -13,7 +13,7 @@ export function ContactForm({ addContact }: ContactFormProps) {
         />
         <input
           type="text"
-          placeholder="Teléfono"
+          placeholder="Descripción"
           className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
         <button
@@ -27,7 +27,7 @@ export function ContactForm({ addContact }: ContactFormProps) {
             const phoneInput = (
               e.currentTarget.form?.elements[1] as HTMLInputElement
             ).value;
-            addContact(nameInput, phoneInput);
+            addTask(nameInput, phoneInput);
           }}
         >
           Agregar
