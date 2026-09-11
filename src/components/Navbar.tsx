@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { LogoutButton } from "./LogoutButton";
 
 interface NavbarProp {
   title: string;
@@ -27,11 +28,9 @@ function Navbar({ title, imgUrl, alt }: NavbarProp) {
         </h1>
       </div>
 
-      <Link to="/" className="absolute right-4 sm:right-6">
-        <button className="px-4 py-2 text-sm sm:px-5 sm:py-2.5 sm:text-base">
-          inicio
-        </button>
-      </Link>
+      <div className="absolute right-4 sm:right-6">
+        <LogoutButton />
+      </div>
     </div>
   );
 }
