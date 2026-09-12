@@ -4,7 +4,7 @@ import { PageLoader } from "../components/PageLoader";
 import { PatientCard } from "../components/PatientCard";
 import { PatientsForm } from "../components/PatientForm";
 import { PatientSearch } from "../components/PatientSearch";
-import { usePatients } from "../context/usePatients";
+import { usePatients } from "../hooks/usePatients";
 import type { Patient } from "../interfaces/patient.interface";
 
 export function Patients() {
