@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { AuthProvider } from "./context/authContext.tsx";
+import { VisitsProvider } from "./context/visitsContext.tsx";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -13,7 +14,9 @@ import App from "./App.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <VisitsProvider>
+        <App />
+      </VisitsProvider>
     </AuthProvider>
   </StrictMode>,
 );

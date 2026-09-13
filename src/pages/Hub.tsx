@@ -7,6 +7,7 @@ import TabBar from "../components/TabBar";
 import { Visits } from "./Visits";
 import { Patients } from "./Patients";
 import { Profile } from "./Profile";
+import { VisitDetail } from "./VisitDetail";
 
 function Hub() {
   return (
@@ -21,6 +22,8 @@ function Hub() {
         <Route path="/hub" element={<Navigate to="/hub/visits" replace />} />
 
         <Route path="/hub/visits" element={<Visits />} />
+
+        <Route path="/hub/visits/:id" element={<VisitDetail />} />
 
         <Route path="/hub/patients" element={<Patients />} />
 

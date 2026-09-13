@@ -1,3 +1,9 @@
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+} from "@ionic/react";
 import type { Patient } from "../Interfaces/patient.interface";
 
 interface PatientCardProps {
@@ -6,13 +12,13 @@ interface PatientCardProps {
 
 export function PatientCard({ patient }: PatientCardProps) {
   return (
-    <li className="flex items-center gap-4 justify-between w-full items-center rounded-lg bg-white p-4 text-left shadow-sm">
-      <div className="min-w-0">
-        <p className="truncate text-lg font-semibold text-gray-900">
+    <IonCard className="w-full ion-no-margin text-left p-4">
+      <IonCardHeader>
+        <IonCardTitle className="text-lg font-semibold text-gray-600">
           {patient.name} {patient.lastname}
-        </p>
-        <p className="text-gray-600">{patient.idDocument}</p>
-      </div>
-    </li>
+        </IonCardTitle>
+        <IonCardSubtitle>{patient.idDocument}</IonCardSubtitle>
+      </IonCardHeader>
+    </IonCard>
   );
 }

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { IonInput, IonButton, IonItem, IonList, IonText } from "@ionic/react";
 
 export function LoginForm() {
-  /* Basicamente el useAuth pide el contexto actual por lo que lo carga si es valida la solicitud,
-  y como usa el Prop de authContext entonces devuelve un context que es el que ahora se llama login */
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -13,16 +12,12 @@ export function LoginForm() {
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    /* Al usar el boton de ingresar se reinicia la pagina, entonces este
-    preventDefault evita que se recargue lo cual ayuda a que el error quede
-    los 2 segundos en pantalla*/
     e.preventDefault();
     const success = login(email, password);
     if (success) {
       navigate("/hub");
     } else {
-      /* Establece un error y lo deja por 2 segundos */
-      setError("Datos invalidos");
+      setError("Datos inválidos");
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -30,45 +25,42 @@ export function LoginForm() {
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center space-y-10 w-full"
-      >
-        <div>
-          <div className="form-div">
-            <div>
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="Escribe tu correo"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-              />
-            </div>
-            <div>
-              <label>Contraseña</label>
-              <input
-                type="password"
-                placeholder="Escribe tu contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-              />
-            </div>
-            {/* Valida si hay un error, y en caso de que si,
-        muestra el contenido de error */}
-            <div>{error && <p className="error-message-login">{error}</p>}</div>
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 mt-4 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Ingresar
-          </button>
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto p-4">
+      <IonList inset={true} className="ion-no-margin">
+        <IonItem>
+          <IonInput
+            label="Email"
+            labelPlacement="floating"
+            type="email"
+            placeholder="Escribe tu correo"
+            value={email}
+            onIonInput={(e) => setEmail(e.detail.value!)}
+          />
+        </IonItem>
+
+        <IonItem>
+          <IonInput
+            label="Contraseña"
+            labelPlacement="floating"
+            type="password"
+            placeholder="Escribe tu contraseña"
+            value={password}
+            onIonInput={(e) => setPassword(e.detail.value!)}
+          />
+        </IonItem>
+      </IonList>
+
+      {error && (
+        <div className="ion-padding-top text-center">
+          <IonText color="danger">
+            <p className="text-sm font-semibold">{error}</p>
+          </IonText>
         </div>
-      </form>
-    </>
+      )}
+
+      <IonButton type="submit" expand="block" className="mt-6">
+        Ingresar
+      </IonButton>
+    </form>
   );
 }
