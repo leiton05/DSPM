@@ -8,7 +8,15 @@ export function usePatients() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setPatients(initialPatients);
+      const savedPatients = localStorage.getItem("patients_list");
+
+      if (savedPatients) {
+        setPatients(JSON.parse(savedPatients));
+      } else {
+        setPatients(initialPatients);
+        localStorage.setItem("patients_list", JSON.stringify(initialPatients));
+      }
+
       setLoading(false);
     }, 1500);
 
@@ -32,13 +40,26 @@ export function usePatients() {
       idDocument: idDocument.trim(),
       phone: phone.trim(),
     };
-    setPatients((currentPatients) => [...currentPatients, newPatient]);
+
+    setPatients((currentPatients) => {
+      const updatedPatients = [...currentPatients, newPatient];
+
+      localStorage.setItem("patients_list", JSON.stringify(updatedPatients));
+
+      return updatedPatients;
+    });
   };
 
   const deletePatient = (id: number) => {
-    setPatients((currentPatients) =>
-      currentPatients.filter((patient) => patient.id !== id),
-    );
+    setPatients((currentPatients) => {
+      const updatedPatients = currentPatients.filter(
+        (patient) => patient.id !== id,
+      );
+
+      localStorage.setItem("patients_list", JSON.stringify(updatedPatients));
+
+      return updatedPatients;
+    });
   };
 
   return {

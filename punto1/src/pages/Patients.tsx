@@ -16,7 +16,7 @@ export function Patients() {
 
   return (
     <>
-      <Navbar title="Tareitas" imgUrl={sun} alt="Imagen de un sol morado" />
+      <Navbar title="Pacientes" imgUrl={sun} alt="Imagen de un sol morado" />
       <div className="w-3/7 flex flex-col items-center gap-4 mx-auto mt-6">
         <PatientSearch patients={patients} onDelete={deletePatient} />
       </div>{" "}
