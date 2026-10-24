@@ -50,14 +50,19 @@ Para comprobar la compilación de producción:
 npm run build
 ```
 
-### Configurar Firebase Authentication
+### Configurar Firebase
 
 1. Crea un proyecto en [Firebase Console](https://console.firebase.google.com/) y registra una aplicación web.
 2. En **Authentication → Sign-in method**, habilita el proveedor **Correo electrónico/Contraseña**.
-3. Copia `.env.example` como `.env.local` y completa sus variables con la configuración de la aplicación web de Firebase.
-4. Reinicia el servidor de desarrollo después de guardar `.env.local`.
+3. Crea una **Cloud Firestore** database para los contactos y una **Realtime Database** para las tareas.
+4. Copia `.env.example` como `.env.local` y completa sus variables con la configuración web de Firebase. `VITE_FIREBASE_DATABASE_URL` es la URL mostrada en la consola de Realtime Database.
+5. Reinicia el servidor de desarrollo después de guardar `.env.local`.
 
-La inicialización de Firebase y las operaciones de autenticación están en `src/firebase/`. No guardes credenciales de servicio ni archivos privados en el cliente. La configuración web de Firebase se publica en el bundle; protege tus datos con Firebase Security Rules y las restricciones de tu proyecto.
+Los contactos se almacenan en `users/{uid}/contacts` de Firestore y las tareas en `users/{uid}/tasks` de Realtime Database. Configura reglas de seguridad en ambos servicios para que cada usuario solo acceda a sus propios datos. La autenticación requiere conexión.
+
+Las frutas se guardan localmente en IndexedDB mediante Dexie; no se sincronizan con Firebase y pueden usarse sin conexión. La app consulta el estado de red del navegador y deshabilita las acciones de contactos y tareas cuando detecta que no hay conexión.
+
+No guardes credenciales de servicio ni archivos privados en el cliente. La configuración web de Firebase se publica en el bundle; protege los datos con Firebase Security Rules y restricciones del proyecto.
 
 ---
 

@@ -11,6 +11,7 @@ interface AuthProviderProp {
 }
 
 export function AuthProvider({ children }: AuthProviderProp) {
+  const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(isFirebaseConfigured);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -23,6 +24,7 @@ export function AuthProvider({ children }: AuthProviderProp) {
     return onAuthStateChanged(
       getFirebaseAuth(),
       (user) => {
+        setUserId(user?.uid ?? null);
         setUserEmail(user?.email ?? null);
         setAuthError(null);
         setIsLoading(false);
@@ -37,24 +39,28 @@ export function AuthProvider({ children }: AuthProviderProp) {
   const login = async (email: string, password: string) => {
     setAuthError(null);
     const user = await signIn(email, password);
+    setUserId(user.uid);
     setUserEmail(user.email);
   };
 
   const register = async (email: string, password: string) => {
     setAuthError(null);
     const user = await registerUser(email, password);
+    setUserId(user.uid);
     setUserEmail(user.email);
   };
 
   const logout = async () => {
     setAuthError(null);
     await signOutUser();
+    setUserId(null);
     setUserEmail(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
+        userId,
         userEmail,
         isLoggedIn: userEmail !== null,
         login,

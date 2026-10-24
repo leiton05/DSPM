@@ -2,19 +2,32 @@ import type { Task } from "../interfaces/task.interface";
 import { IonButton } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import { useTasks } from "../hooks/useTasks";
+import { useState } from "react";
 
 interface TaskCardProps {
   task: Task;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export function TaskCard({ task, onDelete }: TaskCardProps) {
   const navigate = useNavigate();
-  const { selectTask } = useTasks();
+  const { selectTask, isOnline } = useTasks();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleEdit = () => {
     selectTask(task);
     navigate("/tasks/edit");
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await onDelete(task.id);
+    } catch {
+      // The tasks page displays the error from the task context.
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -38,15 +51,17 @@ export function TaskCard({ task, onDelete }: TaskCardProps) {
           fill="outline"
           className="shrink-0"
           aria-label={`Editar tarea ${task.name}`}
+          disabled={!isOnline}
         >
           Editar
         </IonButton>
         <IonButton
           type="button"
-          onClick={() => onDelete(task.id)}
+          onClick={() => void handleDelete()}
           color="danger"
           className="shrink-0"
           aria-label={`Borrar tarea ${task.name}`}
+          disabled={!isOnline || isDeleting}
         >
           Borrar
         </IonButton>

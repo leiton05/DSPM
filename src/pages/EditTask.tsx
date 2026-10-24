@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IonButton, IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage, IonText } from "@ionic/react";
 import { Navigate, useNavigate } from "react-router-dom";
 import mailBox from "../assets/svg/mailBox.svg";
 import Navbar from "../components/Navbar";
@@ -7,7 +7,14 @@ import { PageLoader } from "../components/PageLoader";
 import { useTasks } from "../hooks/useTasks";
 
 export function EditTask() {
-  const { loading, selectedTask, updateTask, clearSelectedTask } = useTasks();
+  const {
+    loading,
+    selectedTask,
+    updateTask,
+    clearSelectedTask,
+    error,
+    isOnline,
+  } = useTasks();
   const navigate = useNavigate();
   const [name, setName] = useState(selectedTask?.name ?? "");
   const [description, setDescription] = useState(
@@ -24,8 +31,9 @@ export function EditTask() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    updateTask(selectedTask.id, name.trim(), description.trim());
-    navigate("/tasks");
+    void updateTask(selectedTask.id, name.trim(), description.trim())
+      .then(() => navigate("/tasks"))
+      .catch(() => undefined);
   };
 
   const handleCancel = () => {
@@ -50,11 +58,22 @@ export function EditTask() {
             <label className="w-full" htmlFor="edit-task-name">
               Nombre
             </label>
+            {!isOnline && (
+              <IonText color="warning">
+                <p role="status">Conéctate a internet para editar tareas.</p>
+              </IonText>
+            )}
+            {error && (
+              <IonText color="danger">
+                <p role="alert">{error}</p>
+              </IonText>
+            )}
             <input
               id="edit-task-name"
               type="text"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              disabled={!isOnline}
               required
               className="w-full"
             />
@@ -65,12 +84,15 @@ export function EditTask() {
               id="edit-task-description"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              disabled={!isOnline}
               required
               rows={4}
               className="w-full"
             />
             <div className="flex gap-4">
-              <IonButton type="submit">Guardar cambios</IonButton>
+              <IonButton type="submit" disabled={!isOnline}>
+                Guardar cambios
+              </IonButton>
               <IonButton type="button" fill="outline" onClick={handleCancel}>
                 Cancelar
               </IonButton>

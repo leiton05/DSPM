@@ -1,7 +1,10 @@
 import mailBox from "../assets/svg/mailBox.svg";
-import { IonButton, IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage, IonText } from "@ionic/react";
+import { useNetwork } from "../hooks/useNetwork";
 
 export function Home() {
+  const { isOnline } = useNetwork();
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -21,12 +24,25 @@ export function Home() {
               Bienvenido a <strong>Kitty-Tasks</strong>
             </p>
             <p className="text-2xl">
-              Lugar donde puedes administrar tus queridas{" "}
-              <strong>tareas</strong> :D
+              Contactos con Firebase, tareas en tiempo real y frutas guardadas
+              localmente.
             </p>
-            <IonButton routerLink="/tasks" className="mt-6">
-              Ingresar
-            </IonButton>
+            {!isOnline && (
+              <IonText color="warning">
+                <p role="status">
+                  Sin conexión: Contactos y Tareas están deshabilitados.
+                </p>
+              </IonText>
+            )}
+            <div className="flex flex-wrap gap-3">
+              <IonButton routerLink="/contacts" disabled={!isOnline}>
+                Contactos
+              </IonButton>
+              <IonButton routerLink="/tasks" disabled={!isOnline}>
+                Tareas
+              </IonButton>
+              <IonButton routerLink="/fruits">Frutas (Dexie)</IonButton>
+            </div>
           </div>
         </div>
       </IonContent>
