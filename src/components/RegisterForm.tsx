@@ -25,7 +25,7 @@ export function RegisterForm() {
     setIsSubmitting(true);
     try {
       await register(email, password);
-      navigate("/tasks");
+      navigate("/missions");
     } catch (error) {
       setError(getAuthErrorMessage(error));
     } finally {

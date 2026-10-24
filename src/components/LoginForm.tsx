@@ -19,7 +19,7 @@ export function LoginForm() {
     setIsSubmitting(true);
     try {
       await login(email, password);
-      navigate("/tasks");
+      navigate("/missions");
     } catch (error) {
       setError(getAuthErrorMessage(error));
     } finally {
