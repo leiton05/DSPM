@@ -1,5 +1,7 @@
 import type { Task } from "../interfaces/task.interface";
 import { IonButton } from "@ionic/react";
+import { useNavigate } from "react-router-dom";
+import { useTasks } from "../hooks/useTasks";
 
 interface TaskCardProps {
   task: Task;
@@ -7,6 +9,14 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, onDelete }: TaskCardProps) {
+  const navigate = useNavigate();
+  const { selectTask } = useTasks();
+
+  const handleEdit = () => {
+    selectTask(task);
+    navigate("/tasks/edit");
+  };
+
   return (
     <li className="flex items-center gap-4 justify-between w-full items-center rounded-lg bg-white p-4 text-left shadow-sm">
       <div className="min-w-0">
@@ -22,6 +32,15 @@ export function TaskCard({ task, onDelete }: TaskCardProps) {
             className="w-5 h-5 accent-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
           />
         </label>
+        <IonButton
+          type="button"
+          onClick={handleEdit}
+          fill="outline"
+          className="shrink-0"
+          aria-label={`Editar tarea ${task.name}`}
+        >
+          Editar
+        </IonButton>
         <IonButton
           type="button"
           onClick={() => onDelete(task.id)}
