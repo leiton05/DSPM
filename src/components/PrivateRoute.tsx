@@ -1,7 +1,17 @@
 import { useAuth } from "../hooks/useAuth";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import type { ReactNode } from "react";
+import { PageLoader } from "./PageLoader";
 
-export const PrivateRoute = () => {
-  const { isLoggedIn } = useAuth();
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+interface PrivateRouteProps {
+  children: ReactNode;
+}
+
+export const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const { isLoggedIn, isLoading } = useAuth();
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  return isLoggedIn ? <>{children}</> : <Navigate to="/login" replace />;
 };

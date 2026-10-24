@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { IonButton } from "@ionic/react";
 import { LogoutButton } from "./LogoutButton";
 
 interface NavbarProp {
@@ -10,11 +10,13 @@ interface NavbarProp {
 function Navbar({ title, imgUrl, alt }: NavbarProp) {
   return (
     <div className="relative flex items-center justify-center px-4 py-4 sm:px-6">
-      <Link to="/" className="absolute left-4 sm:left-6">
-        <button className="px-4 py-2 text-sm sm:px-5 sm:py-2.5 sm:text-base">
-          inicio
-        </button>
-      </Link>
+      <IonButton
+        routerLink="/"
+        className="absolute left-4 sm:left-6"
+        fill="clear"
+      >
+        Inicio
+      </IonButton>
 
       <div className="flex items-center">
         <img

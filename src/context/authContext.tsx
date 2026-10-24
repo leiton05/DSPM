@@ -1,65 +1,67 @@
-import { createContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-
-interface AuthContextProp {
-  userEmail: string | null;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
-  isLoggedIn: boolean;
-}
+import { AuthContext } from "./authContextValue";
+import { signIn, register as registerUser, signOutUser } from "../firebase/auth";
+import { getAuthErrorMessage } from "../firebase/authErrors";
+import { getFirebaseAuth, isFirebaseConfigured } from "../firebase/firebase";
 
 interface AuthProviderProp {
   children: ReactNode;
 }
 
-export const AuthContext = createContext<AuthContextProp | null>(null);
-
 export function AuthProvider({ children }: AuthProviderProp) {
-  const [user, setUser] = useState<string | null>(null);
-  /* Debido a que cuando reiniciaba la pagina aún teniendo sesión, se redirigía a login, 
-  con ayuda de una IA colocamos este loading aquí */
-  const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(isFirebaseConfigured);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(storedUser);
+    if (!isFirebaseConfigured) {
+      return;
     }
-    /* Colocamos el loading como falso inicialmente */
-    setLoading(false);
+
+    return onAuthStateChanged(
+      getFirebaseAuth(),
+      (user) => {
+        setUserEmail(user?.email ?? null);
+        setAuthError(null);
+        setIsLoading(false);
+      },
+      (error) => {
+        setAuthError(getAuthErrorMessage(error));
+        setIsLoading(false);
+      },
+    );
   }, []);
 
-  /* Lo que pasa es que basicamente cuando react carga una pagina primero renderiza y luego busca el
-  localStorage, por lo que antes de que isLoggedIn se coloque como true, inicia como false, y por eso es que
-  se redirige a /login, entonces esto lo que hace es que evita que react renderice al inicio
-  
-  Entonces colocamos loading como true, y se cumple esta condición entonces React no renderiza. No es hasta que
-  react ya proceso el useEffect que el loading pasa a ser false, y puede seguir procesando el codigo, y es ahí
-  donde ya ha sacado que isLoggedIn es true, y no redirige a /login*/
-  if (loading) {
-    return null;
-  }
-
-  const login = (email: string, password: string): boolean => {
-    if (email == "user@mail.com" && password == "123") {
-      setUser(email);
-      localStorage.setItem("user", email);
-      return true;
-    }
-    return false;
+  const login = async (email: string, password: string) => {
+    setAuthError(null);
+    const user = await signIn(email, password);
+    setUserEmail(user.email);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const register = async (email: string, password: string) => {
+    setAuthError(null);
+    const user = await registerUser(email, password);
+    setUserEmail(user.email);
   };
+
+  const logout = async () => {
+    setAuthError(null);
+    await signOutUser();
+    setUserEmail(null);
+  };
+
   return (
     <AuthContext.Provider
       value={{
-        userEmail: user,
-        isLoggedIn: user !== null,
+        userEmail,
+        isLoggedIn: userEmail !== null,
         login,
+        register,
         logout,
+        isLoading,
+        authError,
       }}
     >
       {children}

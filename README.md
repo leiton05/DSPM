@@ -35,6 +35,30 @@ En este repositorio se almacenarán los diferentes ejercicios, prácticas y proy
 
 Aprender y aplicar diferentes estrategias para el desarrollo de software destinado a plataformas móviles, comprendiendo las ventajas y características de cada enfoque y utilizando tecnologías modernas como **React e Ionic**.
 
+## ⚡ Ejecutar Kitty-Tasks
+
+La aplicación utiliza **Ionic React** con **React Router** y Vite.
+
+```bash
+npm install
+npm run dev
+```
+
+Para comprobar la compilación de producción:
+
+```bash
+npm run build
+```
+
+### Configurar Firebase Authentication
+
+1. Crea un proyecto en [Firebase Console](https://console.firebase.google.com/) y registra una aplicación web.
+2. En **Authentication → Sign-in method**, habilita el proveedor **Correo electrónico/Contraseña**.
+3. Copia `.env.example` como `.env.local` y completa sus variables con la configuración de la aplicación web de Firebase.
+4. Reinicia el servidor de desarrollo después de guardar `.env.local`.
+
+La inicialización de Firebase y las operaciones de autenticación están en `src/firebase/`. No guardes credenciales de servicio ni archivos privados en el cliente. La configuración web de Firebase se publica en el bundle; protege tus datos con Firebase Security Rules y las restricciones de tu proyecto.
+
 ---
 
 > 🎓 **Ingeniería Informática · Universidad Autónoma de Occidente**

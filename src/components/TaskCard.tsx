@@ -1,4 +1,5 @@
 import type { Task } from "../interfaces/task.interface";
+import { IonButton } from "@ionic/react";
 
 interface TaskCardProps {
   task: Task;
@@ -21,14 +22,15 @@ export function TaskCard({ task, onDelete }: TaskCardProps) {
             className="w-5 h-5 accent-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
           />
         </label>
-        <button
+        <IonButton
           type="button"
           onClick={() => onDelete(task.id)}
-          className="shrink-0 bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          color="danger"
+          className="shrink-0"
           aria-label={`Borrar tarea ${task.name}`}
         >
           Borrar
-        </button>
+        </IonButton>
       </div>
     </li>
   );
