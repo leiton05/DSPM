@@ -35,9 +35,9 @@ En este repositorio se almacenarán los diferentes ejercicios, prácticas y proy
 
 Aprender y aplicar diferentes estrategias para el desarrollo de software destinado a plataformas móviles, comprendiendo las ventajas y características de cada enfoque y utilizando tecnologías modernas como **React e Ionic**.
 
-## ⚡ Ejecutar Kitty-Tasks
+## ⚡ Ejecutar la app de sensores
 
-La aplicación utiliza **Ionic React** con **React Router** y Vite.
+La aplicación utiliza **Ionic React**, **Capacitor** y Vite. En Home hay una página sencilla por cada API mostrada en las diapositivas: Geolocation, Camera, Motion, Device, Haptics, Filesystem, Local Notifications y Push Notifications.
 
 ```bash
 npm install
@@ -50,19 +50,20 @@ Para comprobar la compilación de producción:
 npm run build
 ```
 
-### Configurar Firebase
+### Probar las funciones nativas
 
-1. Crea un proyecto en [Firebase Console](https://console.firebase.google.com/) y registra una aplicación web.
-2. En **Authentication → Sign-in method**, habilita el proveedor **Correo electrónico/Contraseña**.
-3. Crea una **Cloud Firestore** database para los contactos y una **Realtime Database** para las tareas.
-4. Copia `.env.example` como `.env.local` y completa sus variables con la configuración web de Firebase. `VITE_FIREBASE_DATABASE_URL` es la URL mostrada en la consola de Realtime Database.
-5. Reinicia el servidor de desarrollo después de guardar `.env.local`.
+Las APIs que usan cámara, movimiento, ubicación y notificaciones deben probarse en un dispositivo o emulador. Para añadir Android:
 
-Los contactos se almacenan en `users/{uid}/contacts` de Firestore y las tareas en `users/{uid}/tasks` de Realtime Database. Configura reglas de seguridad en ambos servicios para que cada usuario solo acceda a sus propios datos. La autenticación requiere conexión.
+```bash
+npm install @capacitor/android
+npx cap add android
+npm run cap:sync
+npx cap run android
+```
 
-Las frutas se guardan localmente en IndexedDB mediante Dexie; no se sincronizan con Firebase y pueden usarse sin conexión. La app consulta el estado de red del navegador y deshabilita las acciones de contactos y tareas cuando detecta que no hay conexión.
+La geolocalización en navegador requiere `localhost` o HTTPS y permiso del usuario. Push Notifications solo está habilitado en Android/iOS; Android también requiere configurar Firebase Cloud Messaging y `google-services.json` en el proyecto nativo. Las notificaciones locales, cámara y movimiento pueden tener soporte limitado en navegador.
 
-No guardes credenciales de servicio ni archivos privados en el cliente. La configuración web de Firebase se publica en el bundle; protege los datos con Firebase Security Rules y restricciones del proyecto.
+El archivo de prueba de Filesystem se guarda en el directorio privado de la aplicación.
 
 ---
 

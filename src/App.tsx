@@ -1,51 +1,32 @@
 import { IonRouterOutlet } from "@ionic/react";
 import { Navigate, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Tasks } from "./pages/Tasks";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import { EditTask } from "./pages/EditTask";
-import { Contacts } from "./pages/Contacts";
-import { Fruits } from "./pages/Fruits";
-import { PrivateRoute } from "./components/PrivateRoute";
+import { GeolocationPage } from "./pages/Geolocation";
+import { CameraPage } from "./pages/CameraPage";
+import { MotionPage } from "./pages/MotionPage";
+import { DevicePage } from "./pages/DevicePage";
+import { HapticsPage } from "./pages/HapticsPage";
+import { FilesystemPage } from "./pages/FilesystemPage";
+import { LocalNotificationsPage } from "./pages/LocalNotificationsPage";
+import { PushNotificationsPage } from "./pages/PushNotificationsPage";
 
 function App() {
   return (
     <IonRouterOutlet>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/sensors/geolocation" element={<GeolocationPage />} />
+      <Route path="/sensors/camera" element={<CameraPage />} />
+      <Route path="/sensors/motion" element={<MotionPage />} />
+      <Route path="/sensors/device" element={<DevicePage />} />
+      <Route path="/sensors/haptics" element={<HapticsPage />} />
+      <Route path="/sensors/filesystem" element={<FilesystemPage />} />
       <Route
-        path="/contacts"
-        element={
-          <PrivateRoute>
-            <Contacts />
-          </PrivateRoute>
-        }
+        path="/sensors/local-notifications"
+        element={<LocalNotificationsPage />}
       />
       <Route
-        path="/fruits"
-        element={
-          <PrivateRoute>
-            <Fruits />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/tasks"
-        element={
-          <PrivateRoute>
-            <Tasks />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/tasks/edit"
-        element={
-          <PrivateRoute>
-            <EditTask />
-          </PrivateRoute>
-        }
+        path="/sensors/push-notifications"
+        element={<PushNotificationsPage />}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </IonRouterOutlet>

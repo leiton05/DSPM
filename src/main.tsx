@@ -3,9 +3,6 @@ import { createRoot } from "react-dom/client";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import App from "./App.tsx";
-import { AuthProvider } from "./context/authContext.tsx";
-import { TaskProvider } from "./context/taskContext.tsx";
-import { NetworkProvider } from "./context/networkContext.tsx";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -23,21 +20,15 @@ setupIonicReact();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider>
-      <NetworkProvider>
-        <TaskProvider>
-          <IonApp>
-            <IonReactRouter
-              future={{
-                v7_startTransition: true,
-                v7_relativeSplatPath: true,
-              }}
-            >
-              <App />
-            </IonReactRouter>
-          </IonApp>
-        </TaskProvider>
-      </NetworkProvider>
-    </AuthProvider>
+    <IonApp>
+      <IonReactRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <App />
+      </IonReactRouter>
+    </IonApp>
   </StrictMode>,
 );
